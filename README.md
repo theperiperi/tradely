@@ -1,0 +1,2 @@
+# tradely
+goQuant Assignment
