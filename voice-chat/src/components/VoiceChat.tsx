@@ -3,6 +3,8 @@ import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Mic, MicOff, Loader2, WifiOff, Waves } from 'lucide-react'
 import { BlandWebClient } from 'bland-client-js-sdk'
+import { fetchSymbols, fetchCurrentPrice } from '../utils/exchangeApi';
+
 
 type Message = {
   id: string
@@ -25,6 +27,10 @@ export default function VoiceChat({ agentId }: VoiceChatProps) {
   const audioLevelIntervalRef = useRef<NodeJS.Timeout>()
   const [isConnected, setIsConnected] = useState(false)
   const [callId, setCallId] = useState<string>('')
+  const [selectedExchange, setSelectedExchange] = useState<string | null>(null);
+  const [symbols, setSymbols] = useState<string[]>([]);
+  const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
+  const [currentPrice, setCurrentPrice] = useState<number | null>(null);
 
   // Utility functions for cleanup
   const cleanupWebSocket = async (wsInstance: WebSocket): Promise<void> => {
@@ -218,6 +224,31 @@ export default function VoiceChat({ agentId }: VoiceChatProps) {
       setIsLoading(false)
     }
   }
+
+  const handleExchangeSelection = async (exchange: string) => {
+    setSelectedExchange(exchange);
+    setStatus(`Fetching symbols for ${exchange}...`);
+    try {
+      const fetchedSymbols = await fetchSymbols(exchange);
+      setSymbols(fetchedSymbols);
+      // Prompt user to select a symbol (via TTS or UI)
+    } catch (err) {
+      setError('Failed to fetch symbols');
+    }
+  };
+
+  const handleSymbolSelection = async (symbol: string) => {
+    setSelectedSymbol(symbol);
+    setStatus(`Fetching price for ${symbol}...`);
+    try {
+      if (!selectedExchange) return;
+      const price = await fetchCurrentPrice(selectedExchange, symbol);
+      setCurrentPrice(price);
+      // Prompt user with the price (via TTS or UI)
+    } catch (err) {
+      setError('Failed to fetch price');
+    }
+  };
 
   return (
     <Card className="w-full max-w-md mx-auto h-[400px] overflow-hidden border-none bg-white/10 backdrop-blur-lg shadow-2xl">

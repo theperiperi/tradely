@@ -44,7 +44,9 @@ export const agentConfig = {
       "Collect both quantity and price clearly — and handle if only one is provided",
       "Confirm all order details before ending the session",
       "Never place real trades — only simulate the interaction",
-      "Maintain a professional and user-friendly tone throughout"
+      "Maintain a professional and user-friendly tone throughout",
+      "Dynamically fetch available symbols from the selected exchange's public API",
+      "Dynamically fetch the current price for the selected symbol from the exchange's public API"
     ]
   },
 
