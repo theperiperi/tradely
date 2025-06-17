@@ -3,6 +3,7 @@ import VoiceChat from '../components/VoiceChat';
 import { createWebAgent } from '../lib/bland';
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import LoadingSpinner from '../components/LoadingSpinner';
+import NeonBackground from '../components/NeonBackground';
 
 export default function HomePage() {
   const [agentId, setAgentId] = useState<string | null>(null);
@@ -34,8 +35,23 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8 flex items-center justify-center">
-      <div className="max-w-2xl w-full mx-auto space-y-6">
+    <main className="min-h-screen bg-black p-8 flex flex-col items-center justify-center relative overflow-hidden">
+      <NeonBackground />
+      {/* Stylized Tradely Logo */}
+      <div className="mb-10 select-none">
+        <span
+          className="text-5xl font-extrabold tracking-tight"
+          style={{
+            fontFamily: 'Montserrat, Inter, sans-serif',
+            color: '#22FF89', // Supabase green
+            letterSpacing: '-0.04em',
+            textShadow: '0 2px 24px #22FF89, 0 1px 0 #000',
+          }}
+        >
+          tradely
+        </span>
+      </div>
+      <div className="max-w-2xl w-full mx-auto space-y-6 relative z-10">
         {error ? (
           <Card className="bg-white/10 backdrop-blur-lg border-none">
             <CardContent className="p-6">
